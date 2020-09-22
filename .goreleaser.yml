@@ -16,9 +16,7 @@ builds:
   ldflags:
     - '-s -w -X main.version={{.Version}} -X main.commit={{.Commit}}'
   goos:
-    - windows
     - linux
-    - darwin
   goarch:
     - amd64
   ignore:
