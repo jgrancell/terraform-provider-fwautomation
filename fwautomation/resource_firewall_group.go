@@ -68,7 +68,9 @@ func resourceFirewallGroupCreate(ctx context.Context, d *schema.ResourceData, m 
   var diags diag.Diagnostics
 
   client := m.(*ssh.Client)
-  _, err := runResourceFirewallGroupsTask(client, d, "add")
+  output, err := runResourceFirewallGroupsTask(client, d, "add")
+  debugLogOutput("create status", output.Status)
+  debugLogOutput("create reason", output.Reason)
   if err != nil {
     return diag.FromErr(err)
   }
@@ -101,6 +103,7 @@ func resourceFirewallGroupDelete(ctx context.Context, d *schema.ResourceData, m 
   }
 
   debugLogOutput(d.Id(), output.Status)
+  debugLogOutput(d.Id(), output.Reason)
   d.SetId("")
 
   return diags
@@ -154,7 +157,7 @@ func generateCommand(d *schema.ResourceData, method string) string {
 
 func debugLogOutput(id string, output string) {
   //Debug log for development
-  f, _ := os.OpenFile("./debug-output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+  f, _ := os.OpenFile("./terraform-provider-fwautomation.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
   defer f.Close()
   _, err := f.WriteString(id+": "+output+".\n")
   if err != nil {
