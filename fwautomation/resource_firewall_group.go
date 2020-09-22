@@ -126,6 +126,7 @@ func runResourceFirewallGroupsTask(c *ssh.Client, d *schema.ResourceData, method
   }
 
   str := b.String()
+  debugLogOutput("creation raw output", str)
   json.Unmarshal([]byte(str), &resp)
 
   if resp.Status == "failed" {
@@ -159,7 +160,7 @@ func debugLogOutput(id string, output string) {
   //Debug log for development
   f, _ := os.OpenFile("./terraform-provider-fwautomation.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
   defer f.Close()
-  _, err := f.WriteString(id+": "+output+".\n")
+  _, err := f.WriteString(id+": "+output+"\n")
   if err != nil {
     panic(err)
   }
