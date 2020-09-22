@@ -112,16 +112,23 @@ func resourceFirewallGroupDelete(ctx context.Context, d *schema.ResourceData, m 
 func runResourceFirewallGroupsTask(c *ssh.Client, d *schema.ResourceData, method string) (FirewallResponse, error) {
   resp := FirewallResponse{}
   session, err := c.NewSession()
+  debugLogOutput("task runner debug 1", "passed")
   if err != nil {
+    debugLogOutput("task runner debug 1", err.Error())
     return resp, err
   }
   defer session.Close()
-
+  debugLogOutput("task runner debug 2", "passed")
   var b bytes.Buffer
+  debugLogOutput("task runner debug 3", "passed")
   session.Stdout = &b
+  debugLogOutput("task runner debug 4", "passed")
   cmd := generateCommand(d, method)
+  debugLogOutput("task runner debug 5", "passed")
   err2 := session.Run(cmd)
+  debugLogOutput("task runner debug 6", "passed")
   if err2 != nil {
+    debugLogOutput("task runner debug 6", err.Error())
     return resp, err2
   }
 
