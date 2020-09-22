@@ -128,7 +128,7 @@ func runResourceFirewallGroupsTask(c *ssh.Client, d *schema.ResourceData, method
   err2 := session.Run(cmd)
   debugLogOutput("task runner debug 6", "passed")
   if err2 != nil {
-    debugLogOutput("task runner debug 6", err.Error())
+    debugLogOutput("task runner debug 6", err2.Error())
     return resp, err2
   }
 
@@ -160,7 +160,7 @@ func generateCommand(d *schema.ResourceData, method string) string {
   hostname := getValue(d, "hostname", method)
   ip_address := getValue(d, "ip_address", method)
 
-  return "manage group group="+group_name+" hostname="+hostname+" ip="+ip_address+" method="+method
+  return "modify group group="+group_name+" hostname="+hostname+" ip="+ip_address+" method="+method
 }
 
 func debugLogOutput(id string, output string) {
